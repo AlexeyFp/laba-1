@@ -1,0 +1,28 @@
+digit_map = {
+    '0': 'ноль', '2': 'два', '4': 'четыре', '6': 'шесть',
+    '8': 'восемь', 'A': 'А', 'C': 'Ц', 'E': 'Е'
+}
+
+odd_first = {'1', '3', '5', '7', '9', 'B', 'D', 'F'}  # Нечётные стартовые цифры
+
+def process_token(token):
+    token_upper = token.upper()
+    if token_upper[0] not in odd_first:
+        return None
+    try:
+        value = int(token_upper, 16)
+        if value > 102410 or value % 2 != 0:
+            return None
+        return ' '.join(digit_map.get(c, c) for c in token_upper)
+    except ValueError:
+        return None
+
+def main():
+    with open('input.txt', 'r') as f:
+        while block := f.read(1024):  # Чтение файла поблочно
+            for token in block.split():
+                if res := process_token(token):
+                    print(res)
+
+if __name__ == "__main__":
+    main()
