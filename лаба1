@@ -20,7 +20,7 @@ def main():
                 if not valid:
                     continue
                 num = int(word_upper, 16)
-                if num > 102410 or num % 2 != 0:
+                if num > 1024 or num % 2 != 0:
                     continue
                 result = ' '.join(digit_map.get(c, c) for c in word_upper)
                 print(result)
