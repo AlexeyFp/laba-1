@@ -1,29 +1,18 @@
 digit_map = {'0': 'ноль', '2': 'два', '4': 'четыре', '6': 'шесть', '8': 'восемь', 'A': 'А', 'C': 'Ц', 'E': 'Е'}
 start_digits = {'1', '3', '5', '7', '9', 'B', 'D', 'F'}
 
-def main():
-    with open('input.txt', 'r') as f:
+buffer = ''
+with open('input.txt', 'r') as f:
+    while block := f.read(1024):
+        buffer += block
+        words = buffer.split()
         buffer = ''
-        while block := f.read(1024):
-            buffer += block
-            parts = buffer.split()
-            buffer = ''
-            for word in parts:
-                word_upper = word.upper()
-                if word_upper[0] not in start_digits:
-                    continue
-                valid = True
-                for c in word_upper:
-                    if c not in '0123456789ABCDEF':
-                        valid = False
-                        break
-                if not valid:
-                    continue
-                num = int(word_upper, 16)
-                if num > 1024 or num % 2 != 0:
-                    continue
-                result = ' '.join(digit_map.get(c, c) for c in word_upper)
-                print(result)
-
-if __name__ == "__main__":
-    main()
+        for word in words:
+            upper_word = word.upper()
+            if not upper_word or upper_word[0] not in start_digits:
+                continue
+            if all(c in '0123456789ABCDEF' for c in upper_word):
+                num = int(upper_word, 16)
+                if num <= 1024 and num % 2 == 0:
+                    res = ' '.join(digit_map.get(c, c) for c in upper_word)
+                    print(res)
