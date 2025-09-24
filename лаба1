@@ -1,13 +1,11 @@
-digit_map = {'0': 'ноль', '2': 'два', '4': 'четыре', '6': 'шесть', '8': 'восемь', 'A': 'А', 'C': 'Ц', 'E': 'Е'}
+digit_map = {'0': 'ноль', '2': 'два', '4': 'четыре', '6': 'шесть', '8': 'восемь', 'A': 'десять', 'C': 'двенадцать', 'E': 'четырнадцать'}
 start_digits = {'1', '3', '5', '7', '9', 'B', 'D', 'F'}
-
 buffer = ''
-with open('input.txt', 'r') as f:
+with open('oioi.txt', 'r') as f:
     while block := f.read(1024):
         buffer += block
         words = buffer.split()
-        buffer = ''
-        for word in words:
+        for word in words[:-1]:
             upper_word = word.upper()
             if not upper_word or upper_word[0] not in start_digits:
                 continue
@@ -16,3 +14,11 @@ with open('input.txt', 'r') as f:
                 if num <= 1024 and num % 2 == 0:
                     res = ' '.join(digit_map.get(c, c) for c in upper_word)
                     print(res)
+        buffer = words[-1]
+if buffer:
+    upper_word = buffer.upper()
+    if upper_word and upper_word[0] in start_digits and all(c in '0123456789ABCDEF' for c in upper_word):
+        num = int(upper_word, 16)
+        if num <= 1024 and num % 2 == 0:
+            res = ' '.join(digit_map.get(c, c) for c in upper_word)
+            print(res)
